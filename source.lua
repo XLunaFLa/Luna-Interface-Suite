@@ -1235,7 +1235,8 @@ local IconModule = {
 		["voicemail"] = "http://www.roblox.com/asset/?id=6035202019";
 		["business"] = "http://www.roblox.com/asset/?id=6035173853";
 		["mail_outline"] = "http://www.roblox.com/asset/?id=6035190844";
-		["vpn_key"] = "http://www.roblox.com/asset/?id=6035202034";
+		["vpn_key"] = "rbxassetid://7733965118";
+		["key"] = "rbxassetid://7733965118";
 		["forward_to_inbox"] = "http://www.roblox.com/asset/?id=6035190840";
 		["contacts"] = "http://www.roblox.com/asset/?id=6035181864";
 		["phonelink_ring"] = "http://www.roblox.com/asset/?id=6035202066";
