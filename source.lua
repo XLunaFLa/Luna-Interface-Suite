@@ -2848,7 +2848,7 @@ function Luna:CreateWindow(WindowSettings)
 
 
 				local Button
-				if ButtonSettings.Description == nil and ButtonSettings.Description ~= "" then
+				if not ButtonSettings.Description or ButtonSettings.Description == "" then
 					Button = Elements.Template.Button:Clone()
 				else
 					Button = Elements.Template.ButtonDesc:Clone()
@@ -4440,7 +4440,7 @@ function Luna:CreateWindow(WindowSettings)
 
 
 			local Button
-			if ButtonSettings.Description == nil and ButtonSettings.Description ~= "" then
+			if not ButtonSettings.Description or ButtonSettings.Description == "" then
 				Button = Elements.Template.Button:Clone()
 			else
 				Button = Elements.Template.ButtonDesc:Clone()
