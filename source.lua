@@ -408,6 +408,10 @@ local IconModule = {
 		["swap_horiz"] = "http://www.roblox.com/asset/?id=6031233841";
 		["fullscreen"] = "http://www.roblox.com/asset/?id=6031094681";
 		["cancel"] = "http://www.roblox.com/asset/?id=6031094677";
+		["error"] = "http://www.roblox.com/asset/?id=6031094677";
+		["error_outline"] = "http://www.roblox.com/asset/?id=6031094677";
+		["gpp_bad"] = "http://www.roblox.com/asset/?id=6031094677";
+		["warning"] = "http://www.roblox.com/asset/?id=6035067826";
 		["subdirectory_arrow_left"] = "http://www.roblox.com/asset/?id=6031104654";
 		["close"] = "http://www.roblox.com/asset/?id=6031094678";
 		["arrow_back_ios"] = "http://www.roblox.com/asset/?id=6031091003";
@@ -1614,9 +1618,9 @@ local function GetIcon(icon, source)
 	else	
 		if icon ~= nil and IconModule[source] then
 			local sourceicon = IconModule[source]
-			return sourceicon[icon]
+			return sourceicon[icon] or "http://www.roblox.com/asset/?id=6031094677"
 		else
-			return nil
+			return "http://www.roblox.com/asset/?id=6031094677"
 		end
 	end
 end
@@ -2124,7 +2128,16 @@ function Luna:Notification(data) -- action e.g open messages
 		-- Set Data
 		newNotification.Title.Text = data.Title
 		newNotification.Description.Text = data.Content 
-		newNotification.Icon.Image = GetIcon(data.Icon, data.ImageSource)
+		local iconData = GetIcon(data.Icon, data.ImageSource)
+		if type(iconData) == "table" then
+			newNotification.Icon.Image = "rbxassetid://" .. tostring(iconData.id)
+			newNotification.Icon.ImageRectSize = iconData.imageRectSize
+			newNotification.Icon.ImageRectOffset = iconData.imageRectOffset
+		elseif type(iconData) == "string" and #iconData > 0 then
+			newNotification.Icon.Image = iconData
+		else
+			newNotification.Icon.Image = "http://www.roblox.com/asset/?id=6031094677"
+		end
 
 		-- Set initial transparency values
 		newNotification.BackgroundTransparency = 1
