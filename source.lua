@@ -2266,6 +2266,7 @@ function Luna:CreateWindow(WindowSettings)
 		LoadingEnabled = true,
 		LoadingTitle = "Luna Interface Suite",
 		LoadingSubtitle = "by Nebula Softworks",
+		NavigationOpen = true,
 
 		ConfigSettings = {},
 
@@ -2297,6 +2298,16 @@ function Luna:CreateWindow(WindowSettings)
 	local Passthrough = false
 
 	local Window = { Bind = Enum.KeyCode.K, CurrentTab = nil, State = true, Size = false, Settings = nil }
+
+	function Window:SetNavigation(open)
+		if open then
+			tween(Elements.Parent, {Size = UDim2.new(1, -205, Elements.Parent.Size.Y.Scale, Elements.Parent.Size.Y.Offset)})
+			tween(Navigation, {Size = UDim2.new(Navigation.Size.X.Scale, 205, Navigation.Size.Y.Scale, Navigation.Size.Y.Offset)})
+		else
+			tween(Elements.Parent, {Size = UDim2.new(1, -55, Elements.Parent.Size.Y.Scale, Elements.Parent.Size.Y.Offset)})
+			tween(Navigation, {Size = UDim2.new(Navigation.Size.X.Scale, 55, Navigation.Size.Y.Scale, Navigation.Size.Y.Offset)})
+		end
+	end
 
 	Main.Title.Title.Text = WindowSettings.Name
 	Main.Title.subtitle.Text = WindowSettings.Subtitle
@@ -2531,6 +2542,11 @@ function Luna:CreateWindow(WindowSettings)
 	Elements.Template.Visible = false
 	Navigation.Tabs["InActive Template"].LayoutOrder = 1000000000
 	Navigation.Tabs["InActive Template"].Visible = false
+
+	if WindowSettings.NavigationOpen ~= false then
+		Navigation.Size = UDim2.new(Navigation.Size.X.Scale, 205, Navigation.Size.Y.Scale, Navigation.Size.Y.Offset)
+		Elements.Parent.Size = UDim2.new(1, -205, Elements.Parent.Size.Y.Scale, Elements.Parent.Size.Y.Offset)
+	end
 
 	local FirstTab = true
 
