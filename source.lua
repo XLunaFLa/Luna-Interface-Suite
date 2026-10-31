@@ -3701,17 +3701,44 @@ function Luna:CreateWindow(WindowSettings)
 				Input.InputFrame.InputBox.PlaceholderText = InputSettings.PlaceholderText
 				Input.InputFrame.ClipsDescendants = true
 				Input.InputFrame.InputBox.ClipsDescendants = true
+				Input.InputFrame.InputBox.ClearTextOnFocus = false
+				Input.InputFrame.InputBox.TextXAlignment = Enum.TextXAlignment.Left
+				Input.InputFrame.InputBox.TextWrapped = false
+				Input.InputFrame.InputBox.MultiLine = false
+				Input.InputFrame.InputBox.TextTruncate = Enum.TextTruncate.None
+				Input.InputFrame.InputBox.Size = UDim2.new(1, 0, 1, 0)
+				Input.InputFrame.InputBox.Position = UDim2.new(0, 0, 0, 0)
 				Input.Title.TextTruncate = Enum.TextTruncate.AtEnd
+
+				local inputPadding = Input.InputFrame.InputBox:FindFirstChildOfClass("UIPadding")
+				if not inputPadding then
+					inputPadding = Instance.new("UIPadding")
+					inputPadding.Name = "LunaInputPadding"
+					inputPadding.Parent = Input.InputFrame.InputBox
+				end
+				inputPadding.PaddingLeft = UDim.new(0, 10)
+				inputPadding.PaddingRight = UDim.new(0, 10)
+				inputPadding.PaddingTop = UDim.new(0, 0)
+				inputPadding.PaddingBottom = UDim.new(0, 0)
 
 				local function CalculateInputWidth()
 					local parentW = (Input.AbsoluteSize.X > 0 and Input.AbsoluteSize.X or 420)
 					local titleW = Input.Title.TextBounds.X
-					local maxAllowed = math.max(140, parentW - titleW - 35)
-					local desired = Input.InputFrame.InputBox.TextBounds.X + 32
-					return math.clamp(desired, 140, maxAllowed)
+					local available = parentW - titleW - 35
+					return math.clamp(available, 200, 280)
 				end
 
-				Input.InputFrame.Size = UDim2.new(0, CalculateInputWidth(), 0, 30)
+				local function UpdateInputWidth()
+					local w = CalculateInputWidth()
+					Input.InputFrame.Size = UDim2.new(0, w, 0, descriptionbool and 42 or 30)
+				end
+
+				UpdateInputWidth()
+				Input:GetPropertyChangedSignal("AbsoluteSize"):Connect(UpdateInputWidth)
+
+				if InputSettings.CurrentValue and InputSettings.CurrentValue ~= "" then
+					Input.InputFrame.InputBox.Text = tostring(InputSettings.CurrentValue)
+				end
 
 				Input.InputFrame.InputBox.FocusLost:Connect(function(bleh)
 
@@ -3757,7 +3784,7 @@ function Luna:CreateWindow(WindowSettings)
 							Input.InputFrame.InputBox.Text = Input.InputFrame.InputBox.Text:sub(1, InputSettings.MaxCharacters)
 						end
 					end
-					TweenService:Create(Input.InputFrame, TweenInfo.new(0.35, Enum.EasingStyle.Exponential, Enum.EasingDirection.Out), {Size = UDim2.new(0, CalculateInputWidth(), 0, 30)}):Play()
+					TweenService:Create(Input.InputFrame, TweenInfo.new(0.2, Enum.EasingStyle.Exponential, Enum.EasingDirection.Out), {Size = UDim2.new(0, CalculateInputWidth(), 0, descriptionbool and 42 or 30)}):Play()
 					if not InputSettings.Enter then
 						local Success, Response = pcall(function()
 							InputSettings.Callback(Input.InputFrame.InputBox.Text)
@@ -3803,7 +3830,7 @@ function Luna:CreateWindow(WindowSettings)
 					Input.InputFrame.InputBox:CaptureFocus()
 					Input.InputFrame.InputBox.Text = tostring(InputSettings.CurrentValue)
 					Input.InputFrame.InputBox:ReleaseFocus()
-					Input.InputFrame.Size = UDim2.new(0, CalculateInputWidth(), 0, descriptionbool and 42 or 30)
+					UpdateInputWidth()
 
 					InputV.CurrentValue = InputSettings.CurrentValue
 				end
@@ -5493,17 +5520,44 @@ function Luna:CreateWindow(WindowSettings)
 			Input.InputFrame.InputBox.PlaceholderText = InputSettings.PlaceholderText
 			Input.InputFrame.ClipsDescendants = true
 			Input.InputFrame.InputBox.ClipsDescendants = true
+			Input.InputFrame.InputBox.ClearTextOnFocus = false
+			Input.InputFrame.InputBox.TextXAlignment = Enum.TextXAlignment.Left
+			Input.InputFrame.InputBox.TextWrapped = false
+			Input.InputFrame.InputBox.MultiLine = false
+			Input.InputFrame.InputBox.TextTruncate = Enum.TextTruncate.None
+			Input.InputFrame.InputBox.Size = UDim2.new(1, 0, 1, 0)
+			Input.InputFrame.InputBox.Position = UDim2.new(0, 0, 0, 0)
 			Input.Title.TextTruncate = Enum.TextTruncate.AtEnd
+
+			local inputPadding = Input.InputFrame.InputBox:FindFirstChildOfClass("UIPadding")
+			if not inputPadding then
+				inputPadding = Instance.new("UIPadding")
+				inputPadding.Name = "LunaInputPadding"
+				inputPadding.Parent = Input.InputFrame.InputBox
+			end
+			inputPadding.PaddingLeft = UDim.new(0, 10)
+			inputPadding.PaddingRight = UDim.new(0, 10)
+			inputPadding.PaddingTop = UDim.new(0, 0)
+			inputPadding.PaddingBottom = UDim.new(0, 0)
 
 			local function CalculateInputWidth()
 				local parentW = (Input.AbsoluteSize.X > 0 and Input.AbsoluteSize.X or 420)
 				local titleW = Input.Title.TextBounds.X
-				local maxAllowed = math.max(140, parentW - titleW - 35)
-				local desired = Input.InputFrame.InputBox.TextBounds.X + 32
-				return math.clamp(desired, 140, maxAllowed)
+				local available = parentW - titleW - 35
+				return math.clamp(available, 200, 280)
 			end
 
-			Input.InputFrame.Size = UDim2.new(0, CalculateInputWidth(), 0, 30)
+			local function UpdateInputWidth()
+				local w = CalculateInputWidth()
+				Input.InputFrame.Size = UDim2.new(0, w, 0, descriptionbool and 42 or 30)
+			end
+
+			UpdateInputWidth()
+			Input:GetPropertyChangedSignal("AbsoluteSize"):Connect(UpdateInputWidth)
+
+			if InputSettings.CurrentValue and InputSettings.CurrentValue ~= "" then
+				Input.InputFrame.InputBox.Text = tostring(InputSettings.CurrentValue)
+			end
 
 			Input.InputFrame.InputBox.FocusLost:Connect(function(bleh)
 
@@ -5549,7 +5603,7 @@ function Luna:CreateWindow(WindowSettings)
 						Input.InputFrame.InputBox.Text = Input.InputFrame.InputBox.Text:sub(1, InputSettings.MaxCharacters)
 					end
 				end
-				TweenService:Create(Input.InputFrame, TweenInfo.new(0.35, Enum.EasingStyle.Exponential, Enum.EasingDirection.Out), {Size = UDim2.new(0, CalculateInputWidth(), 0, 30)}):Play()
+				TweenService:Create(Input.InputFrame, TweenInfo.new(0.2, Enum.EasingStyle.Exponential, Enum.EasingDirection.Out), {Size = UDim2.new(0, CalculateInputWidth(), 0, descriptionbool and 42 or 30)}):Play()
 				if not InputSettings.Enter then
 					local Success, Response = pcall(function()
 						InputSettings.Callback(Input.InputFrame.InputBox.Text)
@@ -5595,7 +5649,7 @@ function Luna:CreateWindow(WindowSettings)
 				Input.InputFrame.InputBox:CaptureFocus()
 				Input.InputFrame.InputBox.Text = tostring(InputSettings.CurrentValue)
 				Input.InputFrame.InputBox:ReleaseFocus()
-				Input.InputFrame.Size = UDim2.new(0, CalculateInputWidth(), 0, descriptionbool and 42 or 30)
+				UpdateInputWidth()
 
 				InputV.CurrentValue = InputSettings.CurrentValue
 			end
