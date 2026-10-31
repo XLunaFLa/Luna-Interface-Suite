@@ -2974,10 +2974,20 @@ function Luna:CreateWindow(WindowSettings)
 				TweenService:Create(Label.Text, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {TextTransparency = 0}):Play()	
 
 				function LabelV:Set(NewLabel)
-					LabelSettings.Text = NewLabel
-					LabelV.Settings = LabelSettings
-					Label.Text.Text = NewLabel
-				end
+	local textStr = ""
+	if type(NewLabel) == "table" then
+		textStr = tostring(NewLabel.Text or NewLabel[1] or "")
+		LabelSettings.Text = textStr
+		if NewLabel.Style then
+			LabelSettings.Style = NewLabel.Style
+		end
+	else
+		textStr = tostring(NewLabel or "")
+		LabelSettings.Text = textStr
+	end
+	LabelV.Settings = LabelSettings
+	Label.Text.Text = textStr
+end
 
 				function LabelV:Destroy()
 					Label.Visible = false
@@ -4600,10 +4610,20 @@ function Luna:CreateWindow(WindowSettings)
 			TweenService:Create(Label.Text, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {TextTransparency = 0}):Play()	
 
 			function LabelV:Set(NewLabel)
-				LabelSettings.Text = NewLabel
-				LabelV.Settings = LabelSettings
-				Label.Text.Text = NewLabel
-			end
+	local textStr = ""
+	if type(NewLabel) == "table" then
+		textStr = tostring(NewLabel.Text or NewLabel[1] or "")
+		LabelSettings.Text = textStr
+		if NewLabel.Style then
+			LabelSettings.Style = NewLabel.Style
+		end
+	else
+		textStr = tostring(NewLabel or "")
+		LabelSettings.Text = textStr
+	end
+	LabelV.Settings = LabelSettings
+	Label.Text.Text = textStr
+end
 
 			function LabelV:Destroy()
 				Label.Visible = false
