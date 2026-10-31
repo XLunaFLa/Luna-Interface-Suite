@@ -3702,39 +3702,35 @@ function Luna:CreateWindow(WindowSettings)
 				Input.InputFrame.ClipsDescendants = true
 				Input.InputFrame.InputBox.ClipsDescendants = true
 				Input.InputFrame.InputBox.ClearTextOnFocus = false
-				Input.InputFrame.InputBox.TextXAlignment = Enum.TextXAlignment.Left
 				Input.InputFrame.InputBox.TextWrapped = false
 				Input.InputFrame.InputBox.MultiLine = false
-				Input.InputFrame.InputBox.TextTruncate = Enum.TextTruncate.None
-				Input.InputFrame.InputBox.Size = UDim2.new(1, 0, 1, 0)
-				Input.InputFrame.InputBox.Position = UDim2.new(0, 0, 0, 0)
+				Input.InputFrame.InputBox.TextScaled = true
 				Input.Title.TextTruncate = Enum.TextTruncate.AtEnd
 
-				local inputPadding = Input.InputFrame.InputBox:FindFirstChildOfClass("UIPadding")
-				if not inputPadding then
-					inputPadding = Instance.new("UIPadding")
-					inputPadding.Name = "LunaInputPadding"
-					inputPadding.Parent = Input.InputFrame.InputBox
+				local sizeConstraint = Input.InputFrame.InputBox:FindFirstChildOfClass("UITextSizeConstraint")
+				if not sizeConstraint then
+					sizeConstraint = Instance.new("UITextSizeConstraint")
+					sizeConstraint.Name = "LunaTextSizeConstraint"
+					sizeConstraint.Parent = Input.InputFrame.InputBox
 				end
-				inputPadding.PaddingLeft = UDim.new(0, 10)
-				inputPadding.PaddingRight = UDim.new(0, 10)
-				inputPadding.PaddingTop = UDim.new(0, 0)
-				inputPadding.PaddingBottom = UDim.new(0, 0)
+				sizeConstraint.MaxTextSize = 14
+				sizeConstraint.MinTextSize = 7
+
+				local oldPadding = Input.InputFrame.InputBox:FindFirstChild("LunaInputPadding")
+				if oldPadding then oldPadding:Destroy() end
 
 				local function CalculateInputWidth()
 					local parentW = (Input.AbsoluteSize.X > 0 and Input.AbsoluteSize.X or 420)
 					local titleW = Input.Title.TextBounds.X
-					local available = parentW - titleW - 35
-					return math.clamp(available, 200, 280)
+					local maxAllowed = math.max(140, parentW - titleW - 35)
+					return math.clamp(maxAllowed, 180, 240)
 				end
 
-				local function UpdateInputWidth()
-					local w = CalculateInputWidth()
-					Input.InputFrame.Size = UDim2.new(0, w, 0, descriptionbool and 42 or 30)
-				end
+				Input.InputFrame.Size = UDim2.new(0, CalculateInputWidth(), 0, descriptionbool and 42 or 30)
 
-				UpdateInputWidth()
-				Input:GetPropertyChangedSignal("AbsoluteSize"):Connect(UpdateInputWidth)
+				Input:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
+					Input.InputFrame.Size = UDim2.new(0, CalculateInputWidth(), 0, descriptionbool and 42 or 30)
+				end)
 
 				if InputSettings.CurrentValue and InputSettings.CurrentValue ~= "" then
 					Input.InputFrame.InputBox.Text = tostring(InputSettings.CurrentValue)
@@ -5521,39 +5517,35 @@ function Luna:CreateWindow(WindowSettings)
 			Input.InputFrame.ClipsDescendants = true
 			Input.InputFrame.InputBox.ClipsDescendants = true
 			Input.InputFrame.InputBox.ClearTextOnFocus = false
-			Input.InputFrame.InputBox.TextXAlignment = Enum.TextXAlignment.Left
 			Input.InputFrame.InputBox.TextWrapped = false
 			Input.InputFrame.InputBox.MultiLine = false
-			Input.InputFrame.InputBox.TextTruncate = Enum.TextTruncate.None
-			Input.InputFrame.InputBox.Size = UDim2.new(1, 0, 1, 0)
-			Input.InputFrame.InputBox.Position = UDim2.new(0, 0, 0, 0)
+			Input.InputFrame.InputBox.TextScaled = true
 			Input.Title.TextTruncate = Enum.TextTruncate.AtEnd
 
-			local inputPadding = Input.InputFrame.InputBox:FindFirstChildOfClass("UIPadding")
-			if not inputPadding then
-				inputPadding = Instance.new("UIPadding")
-				inputPadding.Name = "LunaInputPadding"
-				inputPadding.Parent = Input.InputFrame.InputBox
+			local sizeConstraint = Input.InputFrame.InputBox:FindFirstChildOfClass("UITextSizeConstraint")
+			if not sizeConstraint then
+				sizeConstraint = Instance.new("UITextSizeConstraint")
+				sizeConstraint.Name = "LunaTextSizeConstraint"
+				sizeConstraint.Parent = Input.InputFrame.InputBox
 			end
-			inputPadding.PaddingLeft = UDim.new(0, 10)
-			inputPadding.PaddingRight = UDim.new(0, 10)
-			inputPadding.PaddingTop = UDim.new(0, 0)
-			inputPadding.PaddingBottom = UDim.new(0, 0)
+			sizeConstraint.MaxTextSize = 14
+			sizeConstraint.MinTextSize = 7
+
+			local oldPadding = Input.InputFrame.InputBox:FindFirstChild("LunaInputPadding")
+			if oldPadding then oldPadding:Destroy() end
 
 			local function CalculateInputWidth()
 				local parentW = (Input.AbsoluteSize.X > 0 and Input.AbsoluteSize.X or 420)
 				local titleW = Input.Title.TextBounds.X
-				local available = parentW - titleW - 35
-				return math.clamp(available, 200, 280)
+				local maxAllowed = math.max(140, parentW - titleW - 35)
+				return math.clamp(maxAllowed, 180, 240)
 			end
 
-			local function UpdateInputWidth()
-				local w = CalculateInputWidth()
-				Input.InputFrame.Size = UDim2.new(0, w, 0, descriptionbool and 42 or 30)
-			end
+			Input.InputFrame.Size = UDim2.new(0, CalculateInputWidth(), 0, descriptionbool and 42 or 30)
 
-			UpdateInputWidth()
-			Input:GetPropertyChangedSignal("AbsoluteSize"):Connect(UpdateInputWidth)
+			Input:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
+				Input.InputFrame.Size = UDim2.new(0, CalculateInputWidth(), 0, descriptionbool and 42 or 30)
+			end)
 
 			if InputSettings.CurrentValue and InputSettings.CurrentValue ~= "" then
 				Input.InputFrame.InputBox.Text = tostring(InputSettings.CurrentValue)
