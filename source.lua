@@ -3699,7 +3699,19 @@ function Luna:CreateWindow(WindowSettings)
 				TweenService:Create(Input.InputFrame.InputBox, TweenInfo.new(0.3, Enum.EasingStyle.Exponential), {TextTransparency = 0}):Play()
 
 				Input.InputFrame.InputBox.PlaceholderText = InputSettings.PlaceholderText
-				Input.InputFrame.Size = UDim2.new(0, Input.InputFrame.InputBox.TextBounds.X + 52, 0, 30)
+				Input.InputFrame.ClipsDescendants = true
+				Input.InputFrame.InputBox.ClipsDescendants = true
+				Input.Title.TextTruncate = Enum.TextTruncate.AtEnd
+
+				local function CalculateInputWidth()
+					local parentW = (Input.AbsoluteSize.X > 0 and Input.AbsoluteSize.X or 420)
+					local titleW = Input.Title.TextBounds.X
+					local maxAllowed = math.max(140, parentW - titleW - 35)
+					local desired = Input.InputFrame.InputBox.TextBounds.X + 32
+					return math.clamp(desired, 140, maxAllowed)
+				end
+
+				Input.InputFrame.Size = UDim2.new(0, CalculateInputWidth(), 0, 30)
 
 				Input.InputFrame.InputBox.FocusLost:Connect(function(bleh)
 
@@ -3745,7 +3757,7 @@ function Luna:CreateWindow(WindowSettings)
 							Input.InputFrame.InputBox.Text = Input.InputFrame.InputBox.Text:sub(1, InputSettings.MaxCharacters)
 						end
 					end
-					TweenService:Create(Input.InputFrame, TweenInfo.new(0.55, Enum.EasingStyle.Exponential, Enum.EasingDirection.Out), {Size = UDim2.new(0, Input.InputFrame.InputBox.TextBounds.X + 52, 0, 30)}):Play()
+					TweenService:Create(Input.InputFrame, TweenInfo.new(0.35, Enum.EasingStyle.Exponential, Enum.EasingDirection.Out), {Size = UDim2.new(0, CalculateInputWidth(), 0, 30)}):Play()
 					if not InputSettings.Enter then
 						local Success, Response = pcall(function()
 							InputSettings.Callback(Input.InputFrame.InputBox.Text)
@@ -3791,7 +3803,7 @@ function Luna:CreateWindow(WindowSettings)
 					Input.InputFrame.InputBox:CaptureFocus()
 					Input.InputFrame.InputBox.Text = tostring(InputSettings.CurrentValue)
 					Input.InputFrame.InputBox:ReleaseFocus()
-					Input.InputFrame.Size = UDim2.new(0, Input.InputFrame.InputBox.TextBounds.X + 52, 0, 42)
+					Input.InputFrame.Size = UDim2.new(0, CalculateInputWidth(), 0, descriptionbool and 42 or 30)
 
 					InputV.CurrentValue = InputSettings.CurrentValue
 				end
@@ -5479,7 +5491,19 @@ function Luna:CreateWindow(WindowSettings)
 			TweenService:Create(Input.InputFrame.InputBox, TweenInfo.new(0.3, Enum.EasingStyle.Exponential), {TextTransparency = 0}):Play()
 
 			Input.InputFrame.InputBox.PlaceholderText = InputSettings.PlaceholderText
-			Input.InputFrame.Size = UDim2.new(0, Input.InputFrame.InputBox.TextBounds.X + 52, 0, 30)
+			Input.InputFrame.ClipsDescendants = true
+			Input.InputFrame.InputBox.ClipsDescendants = true
+			Input.Title.TextTruncate = Enum.TextTruncate.AtEnd
+
+			local function CalculateInputWidth()
+				local parentW = (Input.AbsoluteSize.X > 0 and Input.AbsoluteSize.X or 420)
+				local titleW = Input.Title.TextBounds.X
+				local maxAllowed = math.max(140, parentW - titleW - 35)
+				local desired = Input.InputFrame.InputBox.TextBounds.X + 32
+				return math.clamp(desired, 140, maxAllowed)
+			end
+
+			Input.InputFrame.Size = UDim2.new(0, CalculateInputWidth(), 0, 30)
 
 			Input.InputFrame.InputBox.FocusLost:Connect(function(bleh)
 
@@ -5525,7 +5549,7 @@ function Luna:CreateWindow(WindowSettings)
 						Input.InputFrame.InputBox.Text = Input.InputFrame.InputBox.Text:sub(1, InputSettings.MaxCharacters)
 					end
 				end
-				TweenService:Create(Input.InputFrame, TweenInfo.new(0.55, Enum.EasingStyle.Exponential, Enum.EasingDirection.Out), {Size = UDim2.new(0, Input.InputFrame.InputBox.TextBounds.X + 52, 0, 30)}):Play()
+				TweenService:Create(Input.InputFrame, TweenInfo.new(0.35, Enum.EasingStyle.Exponential, Enum.EasingDirection.Out), {Size = UDim2.new(0, CalculateInputWidth(), 0, 30)}):Play()
 				if not InputSettings.Enter then
 					local Success, Response = pcall(function()
 						InputSettings.Callback(Input.InputFrame.InputBox.Text)
@@ -5571,7 +5595,7 @@ function Luna:CreateWindow(WindowSettings)
 				Input.InputFrame.InputBox:CaptureFocus()
 				Input.InputFrame.InputBox.Text = tostring(InputSettings.CurrentValue)
 				Input.InputFrame.InputBox:ReleaseFocus()
-				Input.InputFrame.Size = UDim2.new(0, Input.InputFrame.InputBox.TextBounds.X + 52, 0, 42)
+				Input.InputFrame.Size = UDim2.new(0, CalculateInputWidth(), 0, descriptionbool and 42 or 30)
 
 				InputV.CurrentValue = InputSettings.CurrentValue
 			end
