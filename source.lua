@@ -2983,20 +2983,51 @@ function Luna:CreateWindow(WindowSettings)
 				TweenService:Create(Label.UIStroke, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {Transparency = 0.5}):Play()
 				TweenService:Create(Label.Text, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {TextTransparency = 0}):Play()	
 
-				function LabelV:Set(NewLabel)
+				function LabelV:Set(NewLabel, NewStyle)
 	local textStr = ""
+	local targetStyle = NewStyle
 	if type(NewLabel) == "table" then
 		textStr = tostring(NewLabel.Text or NewLabel[1] or "")
-		LabelSettings.Text = textStr
-		if NewLabel.Style then
-			LabelSettings.Style = NewLabel.Style
-		end
+		targetStyle = NewLabel.Style or targetStyle
 	else
 		textStr = tostring(NewLabel or "")
-		LabelSettings.Text = textStr
+	end
+	LabelSettings.Text = textStr
+	Label.Text.Text = textStr
+	if targetStyle then
+		LabelSettings.Style = targetStyle
+		if targetStyle == 2 then
+			pcall(function()
+				Label.BackgroundColor3 = Color3.fromRGB(86, 171, 128)
+				Label.BackgroundTransparency = 0.8
+				if Label:FindFirstChild("UIStroke") then Label.UIStroke.Color = Color3.fromRGB(86, 171, 128) end
+				if Label:FindFirstChild("Icon") then
+					Label.Icon.Visible = true
+					Label.Icon.Image = "rbxassetid://6031265978"
+					Label.Icon.ImageColor3 = Color3.fromRGB(255, 255, 255)
+				end
+			end)
+		elseif targetStyle == 3 then
+			pcall(function()
+				Label.BackgroundColor3 = Color3.fromRGB(171, 94, 94)
+				Label.BackgroundTransparency = 0.8
+				if Label:FindFirstChild("UIStroke") then Label.UIStroke.Color = Color3.fromRGB(171, 94, 94) end
+				if Label:FindFirstChild("Icon") then
+					Label.Icon.Visible = true
+					Label.Icon.Image = "rbxassetid://6031084745"
+					Label.Icon.ImageColor3 = Color3.fromRGB(255, 255, 255)
+				end
+			end)
+		elseif targetStyle == 1 then
+			pcall(function()
+				Label.BackgroundColor3 = Color3.fromRGB(30, 33, 40)
+				Label.BackgroundTransparency = 1
+				if Label:FindFirstChild("UIStroke") then Label.UIStroke.Color = Color3.fromRGB(60, 60, 75) end
+				if Label:FindFirstChild("Icon") then Label.Icon.Visible = false end
+			end)
+		end
 	end
 	LabelV.Settings = LabelSettings
-	Label.Text.Text = textStr
 end
 
 				function LabelV:Destroy()
@@ -4651,20 +4682,51 @@ end
 			TweenService:Create(Label.UIStroke, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {Transparency = 0.5}):Play()
 			TweenService:Create(Label.Text, TweenInfo.new(0.7, Enum.EasingStyle.Exponential), {TextTransparency = 0}):Play()	
 
-			function LabelV:Set(NewLabel)
+			function LabelV:Set(NewLabel, NewStyle)
 	local textStr = ""
+	local targetStyle = NewStyle
 	if type(NewLabel) == "table" then
 		textStr = tostring(NewLabel.Text or NewLabel[1] or "")
-		LabelSettings.Text = textStr
-		if NewLabel.Style then
-			LabelSettings.Style = NewLabel.Style
-		end
+		targetStyle = NewLabel.Style or targetStyle
 	else
 		textStr = tostring(NewLabel or "")
-		LabelSettings.Text = textStr
+	end
+	LabelSettings.Text = textStr
+	Label.Text.Text = textStr
+	if targetStyle then
+		LabelSettings.Style = targetStyle
+		if targetStyle == 2 then
+			pcall(function()
+				Label.BackgroundColor3 = Color3.fromRGB(86, 171, 128)
+				Label.BackgroundTransparency = 0.8
+				if Label:FindFirstChild("UIStroke") then Label.UIStroke.Color = Color3.fromRGB(86, 171, 128) end
+				if Label:FindFirstChild("Icon") then
+					Label.Icon.Visible = true
+					Label.Icon.Image = "rbxassetid://6031265978"
+					Label.Icon.ImageColor3 = Color3.fromRGB(255, 255, 255)
+				end
+			end)
+		elseif targetStyle == 3 then
+			pcall(function()
+				Label.BackgroundColor3 = Color3.fromRGB(171, 94, 94)
+				Label.BackgroundTransparency = 0.8
+				if Label:FindFirstChild("UIStroke") then Label.UIStroke.Color = Color3.fromRGB(171, 94, 94) end
+				if Label:FindFirstChild("Icon") then
+					Label.Icon.Visible = true
+					Label.Icon.Image = "rbxassetid://6031084745"
+					Label.Icon.ImageColor3 = Color3.fromRGB(255, 255, 255)
+				end
+			end)
+		elseif targetStyle == 1 then
+			pcall(function()
+				Label.BackgroundColor3 = Color3.fromRGB(30, 33, 40)
+				Label.BackgroundTransparency = 1
+				if Label:FindFirstChild("UIStroke") then Label.UIStroke.Color = Color3.fromRGB(60, 60, 75) end
+				if Label:FindFirstChild("Icon") then Label.Icon.Visible = false end
+			end)
+		end
 	end
 	LabelV.Settings = LabelSettings
-	Label.Text.Text = textStr
 end
 
 			function LabelV:Destroy()
