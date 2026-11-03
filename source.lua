@@ -6917,13 +6917,11 @@ end
 	end
 
 	Main.Controls.Close.ImageLabel.MouseButton1Click:Connect(function()
-		Hide(Main, Window.Bind, true)
-		dragBar.Visible = false
-		Window.State = false
-		if UserInputService.KeyboardEnabled == false then
-			LunaUI.MobileSupport.Visible = true
-		end
+		Luna:Destroy()
 	end)
+	Window.Destroy = function()
+		Luna:Destroy()
+	end
 	Main.Controls.Close["MouseEnter"]:Connect(function()
 		tween(Main.Controls.Close.ImageLabel, {ImageColor3 = Color3.new(1,1,1)})
 	end)
