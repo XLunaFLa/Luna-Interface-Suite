@@ -1911,34 +1911,44 @@ local function Hide(Window, bind, notif)
 end
 
 
-if gethui then
-	LunaUI.Parent = gethui()
-elseif syn and syn.protect_gui then 
-	syn.protect_gui(LunaUI)
-	LunaUI.Parent = CoreGui
-elseif not isStudio and CoreGui:FindFirstChild("RobloxGui") then
-	LunaUI.Parent = CoreGui:FindFirstChild("RobloxGui")
-elseif not isStudio then
-	LunaUI.Parent = CoreGui
+local function ResolveSafeGuiParent()
+	if gethui then
+		local ok, h = pcall(gethui)
+		if ok and h then return h end
+	end
+	if syn and syn.protect_gui then
+		pcall(syn.protect_gui, LunaUI)
+	end
+	local testOk = pcall(function()
+		local test = Instance.new("Folder")
+		test.Parent = CoreGui
+		test:Destroy()
+	end)
+	if testOk then
+		return CoreGui
+	end
+	local lp = Players.LocalPlayer
+	if lp then
+		local pgui = lp:FindFirstChildOfClass("PlayerGui") or lp:FindFirstChild("PlayerGui")
+		if pgui then return pgui end
+	end
+	return CoreGui
 end
 
-if gethui then
-	for _, Interface in ipairs(gethui():GetChildren()) do
-		if Interface.Name == LunaUI.Name and Interface ~= LunaUI then
-			Hide(Interface.SmartWindow)
-			Interface.Enabled = false
-			Interface.Name = "Luna-Old"
+local targetGuiParent = ResolveSafeGuiParent()
+pcall(function() LunaUI.Parent = targetGuiParent end)
+
+pcall(function()
+	if targetGuiParent then
+		for _, Interface in ipairs(targetGuiParent:GetChildren()) do
+			if Interface.Name == LunaUI.Name and Interface ~= LunaUI then
+				Hide(Interface.SmartWindow)
+				Interface.Enabled = false
+				Interface.Name = "Luna-Old"
+			end
 		end
 	end
-elseif not isStudio then
-	for _, Interface in ipairs(CoreGui:GetChildren()) do
-		if Interface.Name == LunaUI.Name and Interface ~= LunaUI then
-			Hide(Interface.SmartWindow)
-			Interface.Enabled = false
-			Interface.Name = "Luna-Old"
-		end
-	end
-end
+end)
 
 LunaUI.Enabled = false
 LunaUI.SmartWindow.Visible = false
