@@ -3739,6 +3739,26 @@ end
 				local oldPadding = Input.InputFrame.InputBox:FindFirstChild("LunaInputPadding")
 				if oldPadding then oldPadding:Destroy() end
 
+				-- Hitbox & Interactivity Elevation
+				Input.Title.Active = false
+				Input.Title.Selectable = false
+				if descriptionbool then
+					Input.Desc.Active = false
+					Input.Desc.Selectable = false
+				end
+
+				Input.InputFrame.ZIndex = 160
+				Input.InputFrame.InputBox.ZIndex = 161
+				if Input.InputFrame:FindFirstChild("UIStroke") then
+					Input.InputFrame.UIStroke.ZIndex = 160
+				end
+
+				Input.InputFrame.InputBox.Size = UDim2.new(1, -12, 1, -4)
+				Input.InputFrame.InputBox.Position = UDim2.new(0.5, 0, 0.5, 0)
+				Input.InputFrame.InputBox.AnchorPoint = Vector2.new(0.5, 0.5)
+				Input.InputFrame.InputBox.Active = true
+				Input.InputFrame.InputBox.Selectable = true
+
 				local function CalculateInputWidth()
 					local parentW = (Input.AbsoluteSize.X > 0 and Input.AbsoluteSize.X or 420)
 					local titleW = Input.Title.TextBounds.X
@@ -3746,10 +3766,22 @@ end
 					return math.clamp(maxAllowed, 180, 240)
 				end
 
-				Input.InputFrame.Size = UDim2.new(0, CalculateInputWidth(), 0, descriptionbool and 42 or 30)
+				local function ApplyInputLayout()
+					local inputW = CalculateInputWidth()
+					Input.InputFrame.Size = UDim2.new(0, inputW, 0, descriptionbool and 42 or 30)
+					Input.Title.Size = UDim2.new(1, -inputW - 30, 0, descriptionbool and 23 or 20)
+					if descriptionbool then
+						Input.Desc.Size = UDim2.new(1, -inputW - 30, 0, 15)
+					end
+				end
 
-				Input:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
-					Input.InputFrame.Size = UDim2.new(0, CalculateInputWidth(), 0, descriptionbool and 42 or 30)
+				ApplyInputLayout()
+				Input:GetPropertyChangedSignal("AbsoluteSize"):Connect(ApplyInputLayout)
+
+				Input.InputFrame.InputBegan:Connect(function(io)
+					if io.UserInputType == Enum.UserInputType.MouseButton1 or io.UserInputType == Enum.UserInputType.Touch then
+						Input.InputFrame.InputBox:CaptureFocus()
+					end
 				end)
 
 				if InputSettings.CurrentValue and InputSettings.CurrentValue ~= "" then
@@ -5564,6 +5596,26 @@ end
 			local oldPadding = Input.InputFrame.InputBox:FindFirstChild("LunaInputPadding")
 			if oldPadding then oldPadding:Destroy() end
 
+			-- Hitbox & Interactivity Elevation
+			Input.Title.Active = false
+			Input.Title.Selectable = false
+			if descriptionbool then
+				Input.Desc.Active = false
+				Input.Desc.Selectable = false
+			end
+
+			Input.InputFrame.ZIndex = 160
+			Input.InputFrame.InputBox.ZIndex = 161
+			if Input.InputFrame:FindFirstChild("UIStroke") then
+				Input.InputFrame.UIStroke.ZIndex = 160
+			end
+
+			Input.InputFrame.InputBox.Size = UDim2.new(1, -12, 1, -4)
+			Input.InputFrame.InputBox.Position = UDim2.new(0.5, 0, 0.5, 0)
+			Input.InputFrame.InputBox.AnchorPoint = Vector2.new(0.5, 0.5)
+			Input.InputFrame.InputBox.Active = true
+			Input.InputFrame.InputBox.Selectable = true
+
 			local function CalculateInputWidth()
 				local parentW = (Input.AbsoluteSize.X > 0 and Input.AbsoluteSize.X or 420)
 				local titleW = Input.Title.TextBounds.X
@@ -5571,10 +5623,22 @@ end
 				return math.clamp(maxAllowed, 180, 240)
 			end
 
-			Input.InputFrame.Size = UDim2.new(0, CalculateInputWidth(), 0, descriptionbool and 42 or 30)
+			local function ApplyInputLayout()
+				local inputW = CalculateInputWidth()
+				Input.InputFrame.Size = UDim2.new(0, inputW, 0, descriptionbool and 42 or 30)
+				Input.Title.Size = UDim2.new(1, -inputW - 30, 0, descriptionbool and 23 or 20)
+				if descriptionbool then
+					Input.Desc.Size = UDim2.new(1, -inputW - 30, 0, 15)
+				end
+			end
 
-			Input:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
-				Input.InputFrame.Size = UDim2.new(0, CalculateInputWidth(), 0, descriptionbool and 42 or 30)
+			ApplyInputLayout()
+			Input:GetPropertyChangedSignal("AbsoluteSize"):Connect(ApplyInputLayout)
+
+			Input.InputFrame.InputBegan:Connect(function(io)
+				if io.UserInputType == Enum.UserInputType.MouseButton1 or io.UserInputType == Enum.UserInputType.Touch then
+					Input.InputFrame.InputBox:CaptureFocus()
+				end
 			end)
 
 			if InputSettings.CurrentValue and InputSettings.CurrentValue ~= "" then
